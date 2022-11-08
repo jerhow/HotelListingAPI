@@ -1,3 +1,5 @@
+using System;
+
 namespace HotelListing.API
 {
     public class WeatherForecast
