@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HotelListing.API.Data;
 using HotelListing.API.DTO.Country;
+using HotelListing.API.DTO.Hotel;
 using MessagePack.Resolvers;
 
 namespace HotelListing.API.Configurations
@@ -11,6 +12,9 @@ namespace HotelListing.API.Configurations
         {
             // Create maps between our data types (in both directions if we use ReverseMap)
             CreateMap<Country, CreateCountryDto>().ReverseMap();
+            CreateMap<Country, CountriesDto>().ReverseMap();
+            CreateMap<Country, CountryDto>().ReverseMap();
+            CreateMap<Hotel, HotelDto>().ReverseMap();
         }
     }
 }
