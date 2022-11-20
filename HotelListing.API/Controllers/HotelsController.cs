@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
+using HotelListing.API.DTO.Hotel;
 
 namespace HotelListing.API.Controllers
 {
@@ -77,8 +78,16 @@ namespace HotelListing.API.Controllers
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDto createHotel)
         {
+            var hotel = new Hotel
+            {
+                Name = createHotel.Name,
+                Address = createHotel.Address,
+                Rating = createHotel.Rating,
+                CountryId = createHotel.CountryId
+            };
+
             _context.Hotels.Add(hotel);
             await _context.SaveChangesAsync();
 

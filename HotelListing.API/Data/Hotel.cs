@@ -10,7 +10,7 @@ public class Hotel
 
     public string Address { get; set; }
 
-    public double Rating { get; set; }
+    public double? Rating { get; set; }
 
     // Couple of things:
     // 1. You need this annotation to tell EF that this is a FK
