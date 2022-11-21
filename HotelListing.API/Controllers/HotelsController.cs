@@ -35,16 +35,26 @@ namespace HotelListing.API.Controllers
 
         // GET: api/Hotels/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hotel>> GetHotel(int id)
+        public async Task<ActionResult<GetHotelDto>> GetHotel(int id)
         {
+            GetHotelDto getHotelDto = new GetHotelDto();
+            
             var hotel = await _context.Hotels.FindAsync(id);
-
             if (hotel == null)
             {
                 return NotFound();
             }
 
-            return Ok(hotel);
+            var country = await _context.Countries.FindAsync(id);
+            
+            getHotelDto.Id = hotel.Id;
+            getHotelDto.Name = hotel.Name;
+            getHotelDto.Address = hotel.Address;
+            getHotelDto.Rating = hotel.Rating;
+            getHotelDto.CountryId = hotel.CountryId;
+            getHotelDto.CountryName = country.Name;
+
+            return Ok(getHotelDto);
         }
 
         // PUT: api/Hotels/5
