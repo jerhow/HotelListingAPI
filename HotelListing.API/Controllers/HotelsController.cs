@@ -26,10 +26,21 @@ namespace HotelListing.API.Controllers
 
         // GET: api/Hotels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+        public async Task<ActionResult<IEnumerable<GetHotelDto>>> GetHotels()
         {
-            //return await _context.Hotels.ToListAsync();
-            var hotels = await _context.Hotels.ToListAsync();
+            var hotels = await (from h in _context.Hotels
+                                join c in _context.Countries
+                                on h.CountryId equals c.Id
+                                select new
+                                {
+                                    id = h.Id,
+                                    name = h.Name,
+                                    address = h.Address,
+                                    rating = h.Rating,
+                                    countryId = h.CountryId,
+                                    countryName = c.Name
+                                }).ToListAsync();
+
             return Ok(hotels);
         }
 
