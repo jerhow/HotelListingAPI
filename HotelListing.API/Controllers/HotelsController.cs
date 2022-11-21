@@ -50,12 +50,26 @@ namespace HotelListing.API.Controllers
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
+        public async Task<IActionResult> PutHotel(int id, UpdateHotelDto updateHotelDto)
         {
-            if (id != hotel.Id)
+            if(updateHotelDto.Id != id)
             {
                 return BadRequest();
             }
+
+            var hotel = await _context.Hotels.FindAsync(id);
+            if(hotel == null)
+            {
+                return NotFound();
+            }
+
+            var country = await _context.Countries.FindAsync(updateHotelDto.CountryId);
+            if(country == null)
+            {
+                return NotFound(new { Id = updateHotelDto.CountryId, error = "Invalid country id" });
+            }
+
+            _mapper.Map(updateHotelDto, hotel);
 
             _context.Entry(hotel).State = EntityState.Modified;
 
