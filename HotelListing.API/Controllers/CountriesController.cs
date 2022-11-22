@@ -78,7 +78,7 @@ namespace HotelListing.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CountryExists(id))
+                if (!_context.CountryExists(id))
                 {
                     return NotFound();
                 }
@@ -118,11 +118,6 @@ namespace HotelListing.API.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool CountryExists(int id)
-        {
-            return _context.Countries.Any(e => e.Id == id);
         }
     }
 }

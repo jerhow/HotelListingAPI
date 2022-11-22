@@ -71,5 +71,10 @@ namespace HotelListing.API.Data
         {
             return Hotels.Any(e => e.Id == id);
         }
+
+        public bool CountryExists(int id)
+        {
+            return Countries.Any(e => e.Id == id);
+        }
     }
 }
