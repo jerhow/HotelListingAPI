@@ -100,7 +100,7 @@ namespace HotelListing.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HotelExists(id))
+                if (!_context.HotelExists(id))
                 {
                     return NotFound();
                 }
@@ -140,11 +140,6 @@ namespace HotelListing.API.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool HotelExists(int id)
-        {
-            return _context.Hotels.Any(e => e.Id == id);
         }
     }
 }

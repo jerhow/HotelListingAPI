@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace HotelListing.API.Data
 {
@@ -64,6 +65,11 @@ namespace HotelListing.API.Data
                     Rating = 4
                 }
             );
+        }
+
+        public bool HotelExists(int id)
+        {
+            return Hotels.Any(e => e.Id == id);
         }
     }
 }
