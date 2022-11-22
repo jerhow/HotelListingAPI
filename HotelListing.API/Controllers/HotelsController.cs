@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
 using HotelListing.API.DTO.Hotel;
 using AutoMapper;
+using HotelListing.API.Services;
 
 namespace HotelListing.API.Controllers
 {
@@ -17,11 +18,13 @@ namespace HotelListing.API.Controllers
     {
         private readonly HotelListingDbContext _context;
         private readonly IMapper _mapper;
+        private readonly HotelService _service;
 
         public HotelsController(HotelListingDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            _service = new HotelService(_context);
         }
 
         // GET: api/Hotels
@@ -78,6 +81,11 @@ namespace HotelListing.API.Controllers
                 return BadRequest();
             }
 
+            if (!_service.HotelExists(id))
+            {
+                return NotFound();
+            }
+
             var hotel = await _context.Hotels.FindAsync(id);
             if(hotel == null)
             {
@@ -100,7 +108,7 @@ namespace HotelListing.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.HotelExists(id))
+                if (!_service.HotelExists(id))
                 {
                     return NotFound();
                 }
