@@ -39,23 +39,13 @@ namespace HotelListing.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetHotelDto>> GetHotel(int id)
         {
-            GetHotelDto getHotelDto = new GetHotelDto();
-            
             var hotel = await _context.Hotels.FindAsync(id);
             if (hotel == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
-            
-            getHotelDto.Id = hotel.Id;
-            getHotelDto.Name = hotel.Name;
-            getHotelDto.Address = hotel.Address;
-            getHotelDto.Rating = hotel.Rating;
-            getHotelDto.CountryId = hotel.CountryId;
-            getHotelDto.CountryName = country.Name;
-
+            GetHotelDto getHotelDto = await _service.GetHotelDetailsAsync(hotel);
             return Ok(getHotelDto);
         }
 

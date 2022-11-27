@@ -17,6 +17,23 @@ namespace HotelListing.API.Services
             _context = context;
         }
 
+        public async Task<GetHotelDto> GetHotelDetailsAsync(Hotel hotel)
+        {
+            GetHotelDto getHotelDto = new GetHotelDto();
+
+            var country = await _context.Countries.FindAsync(hotel.CountryId);
+
+            // Explicit manual mapping to DTO
+            getHotelDto.Id = hotel.Id;
+            getHotelDto.Name = hotel.Name;
+            getHotelDto.Address = hotel.Address;
+            getHotelDto.Rating = hotel.Rating;
+            getHotelDto.CountryId = hotel.CountryId;
+            getHotelDto.CountryName = country.Name;
+
+            return getHotelDto;
+        }
+
         public async Task<IEnumerable<GetHotelDto>> GetHotelsAsync()
         {
             // Fetch the data
