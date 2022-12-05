@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HotelListing.API.Data;
 using HotelListing.API.DTO.Country;
 using AutoMapper;
+using HotelListing.API.Services;
 
 namespace HotelListing.API.Controllers
 {
@@ -17,11 +18,13 @@ namespace HotelListing.API.Controllers
     {
         private readonly HotelListingDbContext _context;
         private readonly IMapper _mapper;
+        private readonly CountryService _service;
 
         public CountriesController(HotelListingDbContext context, IMapper mapper)
         {
             _context = context;
-            this._mapper= mapper;
+            _mapper= mapper;
+            _service = new CountryService(_context, _mapper);
         }
 
         // GET: api/Countries
@@ -37,16 +40,14 @@ namespace HotelListing.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDto>> GetCountry(int id)
         {
-            var country = await _context.Countries.Include(q => q.Hotels).FirstOrDefaultAsync(q => q.Id == id);
+            var countryDto = await _service.GetCountry(id);        
 
-            if (country == null)
+            if (countryDto == null)
             {
                 return NotFound();
             }
 
-            var record = _mapper.Map<CountryDto>(country);
-
-            return Ok(record);
+            return Ok(countryDto);
         }
 
         // PUT: api/Countries/5
